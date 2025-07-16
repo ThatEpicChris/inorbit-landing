@@ -1,9 +1,19 @@
+@font-face {
+  font-family: 'alte-haas-grotesk';
+  src: url('type/AlteHaasGroteskRegular.ttf');
+}
+@font-face {
+  font-family: 'alte-haas-grotesk-bold';
+  src: url('type/AlteHaasGroteskBold.ttf');
+}
+
+
 * {
     --text-color: 16, 20, 24;
     --background-color: 250, 240, 240;
     --orange: 255, 78, 1;
     --blue: 83, 216, 251;
-    font-family: "neue-haas-unica", sans-serif;
+    font-family: "alte-haas-grotesk", sans-serif;
 }
 html, body {
     background-color: rgba(var(--background-color), 1);
@@ -125,8 +135,8 @@ section {
 }
 
 h1 {
+    font-family: 'alte-haas-grotesk-bold', sans-serif;
     font-size: 36px;
-    font-weight: 500;
     font-style: normal;
     letter-spacing: -1.6px;
     margin-bottom: 6px;
@@ -144,8 +154,8 @@ p.descriptor {
 }
 
 h2 {
+    font-family: 'alte-haas-grotesk-bold', sans-serif;
     font-size: 14px;
-    font-weight: 500;
     font-style: normal;
     margin-bottom: 0;
 }
