@@ -7,12 +7,17 @@
 }
 html, body {
     background-color: rgba(var(--background-color), 1);
+}
+
+body {
     color: rgba(var(--text-color), 1);
 }
 
 @media (prefers-color-scheme: dark) {
-    html, body {
+    html {
         background-color: rgba(var(--text-color), 1);
+    }
+    body {
         color: rgba(var(--background-color), 1);
     }
     a {
@@ -23,7 +28,7 @@ html, body {
         text-decoration-color: rgba(var(--background-color), 1) !important;
     }
     #noise::after {
-        opacity: 1 !important;
+        opacity: 0.05 !important;
     }
     #grain {
         filter: invert() !important;
@@ -100,6 +105,7 @@ html, body {
     .container {
         left: 20px;
         bottom: 40px;
+        width: calc(100vw - 40px);
         position: absolute;
     }
     #logo {
@@ -111,7 +117,7 @@ header {
     border-width: 0 0 2pt 0;
     border-style: solid;
     border-color: rgba(var(--orange), 1);
-    width: 400px;
+    width: 100%;
 }
 
 section {
