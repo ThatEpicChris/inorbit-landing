@@ -1,0 +1,227 @@
+* {
+    --text-color: 16, 20, 24;
+    --background-color: 250, 240, 240;
+    --orange: 255, 78, 1;
+    --blue: 83, 216, 251;
+    font-family: "neue-haas-unica", sans-serif;
+}
+html, body {
+    background-color: rgba(var(--background-color), 1);
+    color: rgba(var(--text-color), 1);
+}
+
+@media (prefers-color-scheme: dark) {
+    html, body {
+        background-color: rgba(var(--text-color), 1);
+        color: rgba(var(--background-color), 1);
+    }
+    a {
+        color: rgba(var(--background-color), 1) !important;
+    }
+    a:hover {
+        color: rgba(var(--orange), 1) !important;
+        text-decoration-color: rgba(var(--background-color), 1) !important;
+    }
+    #noise::after {
+        opacity: 1 !important;
+    }
+    #grain {
+        filter: invert() !important;
+        opacity: 1 !important;
+    }
+    #gradient {
+        background-image: url('gradientDark.svg') !important;
+    }
+}
+
+#logo {
+    position: fixed;
+    top: 100px;
+    width: auto;
+    height: 36px;
+    z-index: 9999999999;
+}
+
+#logo path {
+    fill: rgba(var(--orange), 1);
+}
+
+#noise::after {
+    animation: noise 8s steps(10) infinite;
+    background-image: url(noise.png);
+    content: "";
+    height: 300%;
+    left: -50%;
+    opacity: 0.25;
+    mix-blend-mode: color-burn;
+    position: fixed;
+    top: -100%;
+    width: 300%;
+    z-index: 99999999999;
+    pointer-events: none;
+}
+
+#grain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    filter: invert();
+    mix-blend-mode: multiply;
+    opacity: 0.2;
+    background-image: url('grain.jpg');
+    background-size: cover;
+    background-position: bottom;
+}
+
+#gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    opacity: 0.5;
+    background-image: url('gradientLight.svg');
+    background-size: cover;
+    background-position: center right;
+}
+
+.container {
+    max-width: 400px;
+    position: fixed;
+    left: 150px;
+    bottom: 100px;
+}
+
+@media (max-width: 700px) {
+    .container {
+        left: 20px;
+        bottom: 40px;
+        position: absolute;
+    }
+    #logo {
+        top: 20px !important;
+    }
+}
+
+header {
+    border-width: 0 0 2pt 0;
+    border-style: solid;
+    border-color: rgba(var(--orange), 1);
+    width: 400px;
+}
+
+section {
+    margin: 14px 0 0 0;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: -1.6px;
+    margin-bottom: 6px;
+    display: inline-block;
+}
+
+p.descriptor {
+    font-size: 12px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1;
+    text-align: left;
+    display: inline-block;
+    margin-left: 6px;
+}
+
+h2 {
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+    margin-bottom: 0;
+}
+
+a {
+    color: rgba(var(--text-color), 1);
+    text-decoration-line: underline;
+    text-decoration-color: rgba(var(--blue), 1);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+}
+a:hover {
+    color: rgba(var(--orange), 1);
+    text-decoration-color: rgba(var(--text-color), 1);
+}
+
+p {
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.5;
+    margin-top: 0;
+}
+
+p.leftCol {
+    position: absolute;
+    display: inline-block;
+    margin-bottom: 0;
+    left: 0;
+}
+
+p.rightCol {
+    position: absolute;
+    display: inline-block;
+    margin-bottom: 0;
+    left: 200px;
+}
+
+footer {
+    margin-top: 42px;
+    font-size: 14px;
+}
+
+.footerOrbit::before {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    border-color: rgba(var(--orange), 1);
+    border-width: 2px;
+    border-style: solid;
+    margin-left: -14px;
+    margin-top: 6px;
+    animation: 2s infinite linear pulse;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes noise {
+    0%, 100% { transform:translate(0, 0) }
+    10% { transform:translate(-5%, -10%) }
+    20% { transform:translate(-15%, 5%) }
+    30% { transform:translate(7%, -25%) }
+    40% { transform:translate(-5%, 25%) }
+    50% { transform:translate(-15%, 10%) }
+    60% { transform:translate(15%, 0%) }
+    70% { transform:translate(0%, 15%) }
+    80% { transform:translate(3%, 35%) }
+    90% { transform:translate(-10%, 10%) }
+}
+
+.footerOrbit {
+    margin-left: 14px;
+}
