@@ -178,6 +178,7 @@ p {
     font-style: normal;
     line-height: 1.5;
     margin-top: 0;
+    text-wrap: pretty;
 }
 
 p.leftCol {
