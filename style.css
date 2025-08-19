@@ -15,6 +15,10 @@
     --blue: 83, 216, 251;
     font-family: "alte-haas-grotesk", sans-serif;
 }
+
+html {
+    background-color: rgba(var(--background-color), 1);
+}
 html, body {
     min-height: 100vh;
     min-width: 100vw;
