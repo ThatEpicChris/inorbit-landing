@@ -32,6 +32,7 @@ body {
     height: 28px;
     z-index: 9999999999;
     margin-bottom: 12px;
+    pointer-events: auto;
 }
 
 #logo path {
@@ -85,6 +86,7 @@ body {
     position: relative;
     left: 150px;
     top: calc(33vh - 16px);
+    pointer-events: none;
 }
 
 .container::after {
@@ -94,7 +96,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(21, 28, 34, 0.8);
+    background-color: rgba(12, 16, 20, 0.8);
     filter: blur(20px);
     z-index: -1;
 }
@@ -102,10 +104,12 @@ body {
 #canvas {
     z-index: -3;
     position: fixed;
+    display: block;
     left: 0;
     top: 0;
     width: 100vw;
     height: 100vh;
+    pointer-events: auto;
 }
 
 @media (max-width: 700px) {
@@ -126,7 +130,7 @@ header {
 }
 
 section {
-    margin: 0 0 0 0;
+    margin: 0 0 14px 0;
 }
 
 hr {
@@ -142,6 +146,7 @@ h1 {
     letter-spacing: -1.6px;
     margin-bottom: 6px;
     display: inline-block;
+    pointer-events: auto;
 }
 
 p.descriptor {
@@ -159,7 +164,12 @@ h2 {
     font-size: 14px;
     font-style: normal;
     margin-bottom: 0;
-    margin-top: 28px
+    margin-top: 28px;
+    pointer-events: auto;
+}
+
+hr + h2 {
+    margin-top: 0;
 }
 
 a {
@@ -168,6 +178,7 @@ a {
     text-decoration-color: rgba(var(--blue), 1);
     text-decoration-thickness: 2px;
     text-underline-offset: 2px;
+    pointer-events: auto;
 }
 a:hover {
     color: rgba(var(--orange), 1);
@@ -182,6 +193,7 @@ p, li {
     margin-top: 0;
     letter-spacing: -0.42px;
     max-width: 380px;
+    pointer-events: auto;
 }
 
 p.leftCol {
@@ -206,6 +218,11 @@ ul {
     grid-template-columns: repeat(2, 1fr);
     margin-top: 0px;
 }
+
+ul#works {
+    display: block;
+}
+
 ul li {
     float: left;
     width: 100%;
@@ -229,6 +246,12 @@ footer {
     margin-left: -14px;
     margin-top: 6px;
     animation: 2s infinite linear pulse;
+}
+
+footer .copyright {
+    margin-top: 14px;
+    display: inline-block;
+    opacity: 0.6;
 }
 
 @keyframes pulse {

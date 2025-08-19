@@ -2,6 +2,8 @@ import * as THREE from 'three'
 
 // Data and visualization
 import { CompositionShader} from './shaders/CompositionShader.js'
+import { ChromaticAberrationShader } from './shaders/ChromaticAberrationShader.js'
+import { VintageGrainShader } from './shaders/VintageGrainShader.js'
 import { BASE_LAYER, BLOOM_LAYER, BLOOM_PARAMS, OVERLAY_LAYER } from "./config/renderConfig.js";
 
 // Rendering
@@ -15,6 +17,8 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { Galaxy } from './objects/galaxy.js';
 
 let canvas, renderer, camera, scene, orbit, baseComposer, bloomComposer, overlayComposer
+let mouse = new THREE.Vector2()
+let raycaster = new THREE.Raycaster()
 
 function initThree() {
 
@@ -51,6 +55,9 @@ function initThree() {
     orbit.minDistance = 1;
     orbit.maxDistance = 16384;
     orbit.maxPolarAngle = (Math.PI / 2) - (Math.PI / 360)
+    
+    // Keep orbit controls enabled but handle mouse events properly
+    orbit.enabled = true;
 
     initRenderPipeline()
 
@@ -96,7 +103,7 @@ function initRenderPipeline() {
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.outputEncoding = THREE.sRGBEncoding
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 0.5
+    renderer.toneMappingExposure = 1.0
     renderer.setClearColor(0x06080A, 1)
     renderer.autoClear = true
 
@@ -119,6 +126,37 @@ function initRenderPipeline() {
     overlayComposer = new EffectComposer(renderer)
     overlayComposer.renderToScreen = false
     overlayComposer.addPass(renderScene)
+
+    // Chromatic aberration pass for subtle color separation
+    const chromaticPass = new ShaderPass(
+        new THREE.ShaderMaterial( {
+            uniforms: {
+                tDiffuse: { value: null },
+                offset: { value: 0.001 },
+                intensity: { value: 0.5 }
+            },
+            vertexShader: ChromaticAberrationShader.vertex,
+            fragmentShader: ChromaticAberrationShader.fragment,
+            transparent: true
+        } )
+    );
+    chromaticPass.needsSwap = true;
+
+    // Vintage grain pass for 70s sci-fi art aesthetic
+    const vintageGrainPass = new ShaderPass(
+        new THREE.ShaderMaterial( {
+            uniforms: {
+                tDiffuse: { value: null },
+                time: { value: 0.0 },
+                grainIntensity: { value: 0.15 },
+                colorShift: { value: 0.3 }
+            },
+            vertexShader: VintageGrainShader.vertex,
+            fragmentShader: VintageGrainShader.fragment,
+            transparent: true
+        } )
+    );
+    vintageGrainPass.needsSwap = true;
 
     // Shader pass to combine base layer, bloom, and overlay layers
     const finalPass = new ShaderPass(
@@ -147,6 +185,8 @@ function initRenderPipeline() {
         }
     ));
     baseComposer.addPass(renderScene)
+    baseComposer.addPass(chromaticPass)
+    baseComposer.addPass(vintageGrainPass)
     baseComposer.addPass(finalPass)
 }
 
@@ -188,13 +228,42 @@ async function render() {
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
 
-    galaxy.updateScale(camera)
+    galaxy.updateScale(camera, mouse)
+
+    // Update vintage grain time
+    if (baseComposer && baseComposer.passes.length > 2) {
+        const vintageGrainPass = baseComposer.passes[2];
+        if (vintageGrainPass.material && vintageGrainPass.material.uniforms) {
+            vintageGrainPass.material.uniforms.time.value = Date.now() * 0.001;
+        }
+    }
 
     // Run each pass of the render pipeline
     renderPipeline()
 
     requestAnimationFrame(render)
 
+}
+
+function onMouseMove(event) {
+    // Calculate mouse position in normalized device coordinates
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+}
+
+// Alternative approach: use orbit controls' mouse position
+function updateMouseFromOrbit() {
+    if (orbit && orbit.mouse) {
+        mouse.x = orbit.mouse.x;
+        mouse.y = orbit.mouse.y;
+        console.log('Mouse from orbit:', mouse.x, mouse.y);
+    }
+}
+
+function onMouseLeave() {
+    // Reset mouse position when cursor leaves canvas
+    mouse.x = 0;
+    mouse.y = 0;
 }
 
 function renderPipeline() {
@@ -235,6 +304,10 @@ canvas.style.left = '0';
 
 // Add window resize listener
 window.addEventListener('resize', handleResize, false);
+
+// Add mouse event listeners for hover effects - use window instead of canvas
+window.addEventListener('mousemove', onMouseMove, false);
+window.addEventListener('mouseleave', onMouseLeave, false);
 
 // Start render loop
 requestAnimationFrame(render)

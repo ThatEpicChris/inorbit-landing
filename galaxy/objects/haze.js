@@ -6,7 +6,7 @@ import * as THREE from 'three'
 const hazeTexture = new THREE.TextureLoader().load('../galaxy/resources/feathered60.png')
 const hazeSprite = new THREE.SpriteMaterial({
     map: hazeTexture, 
-    color: 0xF04000, // More saturated but less bright orange
+    color: 0xFF2800, // Darker red-orange to compensate for additive blending
     opacity: HAZE_OPACITY, 
     depthTest: false, 
     depthWrite: false,

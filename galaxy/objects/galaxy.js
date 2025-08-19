@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Star } from './star.js';
-import { ARMS, ARM_X_DIST, ARM_X_MEAN, ARM_Y_DIST, ARM_Y_MEAN, CORE_X_DIST, CORE_Y_DIST, GALAXY_THICKNESS, HAZE_RATIO, NUM_STARS, OUTER_CORE_X_DIST, OUTER_CORE_Y_DIST } from '../config/galaxyConfig.js';
+import { ARMS, ARM_X_DIST, ARM_X_MEAN, ARM_Y_DIST, ARM_Y_MEAN, CORE_X_DIST, CORE_Y_DIST, GALAXY_THICKNESS, HAZE_RATIO, NUM_STARS, OUTER_CORE_X_DIST, OUTER_CORE_Y_DIST, OUTER_STAR_RATIO, OUTER_STAR_RADIUS_MIN, OUTER_STAR_RADIUS_MAX } from '../config/galaxyConfig.js';
 import { gaussianRandom, spiral } from '../utils.js';
 import { Haze } from './haze.js';
 import { Sun } from './sun.js';
@@ -49,9 +49,10 @@ export class Galaxy {
         this.haze.forEach((haze) => haze.toThreeObject(scene))
     } */
 
-    updateScale(camera) {
+    updateScale(camera, mouse) {
         this.stars.forEach((star) => {
             star.updateScale(camera)
+            star.updateHover(mouse, camera)
         })
     
         this.haze.forEach((haze) => {
@@ -85,6 +86,19 @@ export class Galaxy {
                 let obj = generator(pos)
                 objects.push(obj)
             }
+        }
+
+        // Add a small fraction of stars far beyond the spiral arms to fill page edges
+        const outerCount = Math.floor(numStars * OUTER_STAR_RATIO)
+        for (let i = 0; i < outerCount; i++) {
+            const angle = Math.random() * Math.PI * 2
+            const radius = OUTER_STAR_RADIUS_MIN + Math.random() * (OUTER_STAR_RADIUS_MAX - OUTER_STAR_RADIUS_MIN)
+            const x = Math.cos(angle) * radius
+            const y = Math.sin(angle) * radius
+            const z = gaussianRandom(0, GALAXY_THICKNESS * 0.5)
+            let pos = new THREE.Vector3(x, y, z)
+            let obj = generator(pos)
+            objects.push(obj)
         }
 
         return objects

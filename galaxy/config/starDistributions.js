@@ -1,9 +1,9 @@
 export const starTypes = {
-    // Percentages adjusted for more color variation
-    percentage : [70.0, 13.0, 8.0, 5.0, 3.0, 1.0],
+    // Percentages adjusted for more balanced distribution to reduce synchronization
+    percentage : [45.0, 20.0, 15.0, 10.0, 7.0, 3.0],
     // Colors now include more varied stellar types
     color: [
-        0xffd7aa,  // Warm yellow-orange (most common)
+        0xffd7aa,  // Warm yellow-orange (still most common but reduced)
         0xff9d5c,  // Orange-red giants
         0xffecb8,  // Yellow supergiants
         0xe8e8ff,  // Young blue-white
