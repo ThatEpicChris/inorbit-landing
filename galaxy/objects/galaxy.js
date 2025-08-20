@@ -19,13 +19,13 @@ export class Galaxy {
         // Apply rotations based on viewport size
         if (window.innerWidth <= 700) {
             // Mobile rotations
-            this.container.rotation.z = Math.PI / 2;  // 90 degrees clockwise around Z
+            this.container.rotation.z = Math.PI / 1;  // 90 degrees clockwise around Z
             this.container.rotation.x = (Math.PI / 25) * 1 + THREE.MathUtils.degToRad(7);   // Base + 7 degrees tilt
             this.container.rotation.y = (Math.PI / 7) * 1;  // ~25.7 degrees counterclockwise around Y
         } else {
             // Desktop rotations
-            this.container.rotation.z = Math.PI / 4;  // 90 degrees clockwise around Z
-            this.container.rotation.x = (Math.PI / 25) * 1 + THREE.MathUtils.degToRad(7);   // Base + 7 degrees tilt
+            this.container.rotation.z = Math.PI / 3;  // 90 degrees clockwise around Z
+            this.container.rotation.x = (Math.PI / 20) * -2 + THREE.MathUtils.degToRad(7);   // Base + 7 degrees tilt
             this.container.rotation.y = (Math.PI / 7) * 1;  // ~25.7 degrees counterclockwise around Y
         }
         
