@@ -6,6 +6,11 @@ class Sun {
         // Create container for the binary system
         this.container = new THREE.Object3D();
         
+        // Mobile-only orientation: rotate 15° counterclockwise
+        if (window.innerWidth <= 700) {
+            this.container.rotation.z += THREE.MathUtils.degToRad(15);
+        }
+        
         // Parameters for the binary system
         this.orbitRadius = 25; // Increased distance between suns
         this.rotationSpeed = 0.001; // Speed of orbit

@@ -28,6 +28,7 @@ html, body {
 
 body {
     color: rgba(var(--text-color), 1);
+    pointer-events: none;
 }
 
 #logo {

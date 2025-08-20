@@ -49,7 +49,13 @@ function initThree() {
     orbit = new MapControls(camera, canvas)
     orbit.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
     orbit.dampingFactor = 0.1;
-    orbit.target.set(0, 0, 0);  // Set orbit controls target to galaxy center
+    // Set orbit target after initialization
+    if (window.innerWidth <= 700) {
+        const yOffset = window.innerHeight * 0.1;
+        orbit.target.set(0, yOffset, 0);
+    } else {
+        orbit.target.set(800, 0, 0);
+    }
     
     orbit.screenSpacePanning = false;
     orbit.minDistance = 1;
@@ -69,12 +75,14 @@ function handleResize() {
     
     // Adjust camera position for mobile/desktop
     if (window.innerWidth <= 700) {
-        const topThirdOffset = -(window.innerHeight / 3);
-        camera.position.set(0, topThirdOffset + 850, 850);  // Position above the galaxy
-        camera.lookAt(0, topThirdOffset, 0);  // Look at the galaxy's new position
+        const yOffset = window.innerHeight * 0.1;
+        camera.position.set(0, yOffset + 850, 850);  // Position above the galaxy
+        camera.lookAt(0, yOffset, 0);  // Look at the galaxy's new position
+        orbit.target.set(0, yOffset, 0);
     } else {
         camera.position.set(375, 750, 750);
-        camera.lookAt(400, 0, 0);
+        camera.lookAt(800, 0, 0);
+        orbit.target.set(800, 0, 0);
     }
     
     camera.updateProjectionMatrix();

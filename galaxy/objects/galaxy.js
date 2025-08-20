@@ -16,15 +16,26 @@ export class Galaxy {
         // Position based on viewport size
         this.updatePosition();
         
-        // Apply rotations in order: Z, X, Y (in radians)
-        this.container.rotation.z = Math.PI / 2;  // -45 degrees clockwise around Z
-        this.container.rotation.x = (Math.PI / 8) * 1;   // 45 degrees clockwise around X
-        this.container.rotation.y = (Math.PI / 7) * 1;  // -30 degrees (counterclockwise) around Y
+        // Apply rotations based on viewport size
+        if (window.innerWidth <= 700) {
+            // Mobile rotations
+            this.container.rotation.z = Math.PI / 2;  // 90 degrees clockwise around Z
+            this.container.rotation.x = (Math.PI / 25) * 1 + THREE.MathUtils.degToRad(7);   // Base + 7 degrees tilt
+            this.container.rotation.y = (Math.PI / 7) * 1;  // ~25.7 degrees counterclockwise around Y
+        } else {
+            // Desktop rotations
+            this.container.rotation.z = Math.PI / 4;  // 90 degrees clockwise around Z
+            this.container.rotation.x = (Math.PI / 25) * 1 + THREE.MathUtils.degToRad(7);   // Base + 7 degrees tilt
+            this.container.rotation.y = (Math.PI / 7) * 1;  // ~25.7 degrees counterclockwise around Y
+        }
         
         scene.add(this.container);
 
-        // Add window resize listener for responsive positioning
-        window.addEventListener('resize', () => this.updatePosition());
+        // Add window resize listener for responsive positioning and rotations
+        window.addEventListener('resize', () => {
+            this.updatePosition();
+            this.updateRotations();
+        });
 
         // Create and add the sun at the center
         this.sun = new Sun();
@@ -106,12 +117,26 @@ export class Galaxy {
 
     updatePosition() {
         if (window.innerWidth <= 700) {
-            // Mobile positioning: centered horizontally, at top third vertically
-            const topThirdOffset = -(window.innerHeight / 3);  // Negative to move up
-            this.container.position.set(0, topThirdOffset, 0);
+            // Mobile: center horizontally, position 40% from top
+            const yOffset = window.innerHeight * 0.1; // Move down from center
+            this.container.position.set(0, yOffset, 0);
         } else {
             // Desktop positioning: right side
-            this.container.position.set(-250, 0, 0);
+            this.container.position.set(650, -100, 0);
+        }
+    }
+
+    updateRotations() {
+        if (window.innerWidth <= 700) {
+            // Mobile rotations
+            this.container.rotation.z = Math.PI / 2;  // 90 degrees clockwise around Z
+            this.container.rotation.x = (Math.PI / 25) * 1 + THREE.MathUtils.degToRad(7);   // Base + 7 degrees tilt
+            this.container.rotation.y = (Math.PI / 7) * 1;  // ~25.7 degrees counterclockwise around Y
+        } else {
+            // Desktop rotations
+            this.container.rotation.z = Math.PI / 2;  // 90 degrees clockwise around Z
+            this.container.rotation.x = (Math.PI / 25) * 1 + THREE.MathUtils.degToRad(7);   // Base + 7 degrees tilt
+            this.container.rotation.y = (Math.PI / 7) * 1;  // ~25.7 degrees counterclockwise around Y
         }
     }
 
